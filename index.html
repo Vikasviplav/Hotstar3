@@ -44,23 +44,33 @@
 
 </html>
 <script>
-    let url = "https://fake-movie-database-api.herokuapp.com/api?s=Star Wars";
-    let container = document.getElementById("container");
+    let url = "https://api.themoviedb.org/3/trending/movie/week?api_key=c99715f4526fcf04acc4643716139590";
+ 
     let fun = async () => {
         let data = await fetch(url);
         let res = await data.json();
-        res = res.Search;
+        res = res.results;
         console.log(res)
-        res.forEach(movie => {
-            let div = document.createElement("div");
-            let image = document.createElement("img");
-            image.src = movie.Poster;
-            let title = document.createElement("h2");
-            title.innerText = movie.Title;
-            let year = document.createElement("h1");
-            year.innerText = movie.Year;
-            div.append(image, title, year);
-            container.append(div);
+        let container = document.getElementById("container");
+            container.innerHTML = ""
+        res.forEach(ele => {
+           
+            let card = document.createElement("div");
+            card.id = "card";
+
+            let title = document.createElement("h3");
+            title.id = "name";
+            title.innerText = `Title: ${ele.title}`;
+            let release_date = document.createElement("h3");
+            release_date.innerText = `Release Date: ${ele.release_date}`
+
+            let poster = document.createElement("img");
+            poster.id = "poster";
+            poster.src = `https://image.tmdb.org/t/p/w500/${ele.poster_path}`
+
+            card.append(poster,title,release_date);
+            container.append(card);
+            
         });
     }
     fun()
